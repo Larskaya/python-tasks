@@ -6,85 +6,30 @@ from passenger import *
 
 all_trains = []
 
-number_first_train = '1A'
-number_second_train = '2B'
-number_third_train = '3B'
+t1 = Train('1A', [ 
+	{ 'station': 'msk', 'date': '15.12.2016', 'time': '15:10', 'cost': '0' }, 
+	{ 'station': 'blg', 'date': '15.12.2016', 'time': '15:40', 'cost': '300' },
+	{ 'station': 'rst', 'date': '15.12.2016', 'time': '16:25', 'cost': '650' },
+	{ 'station': 'spb', 'date': '15.12.2016', 'time': '17:10', 'cost': '450' }] )
 
-numbers_of_trains = []
-numbers_of_trains.append(number_first_train)
-numbers_of_trains.append(number_second_train)
-numbers_of_trains.append(number_third_train)
+t2 = Train('2B', [
+	{ 'station': 'msk', 'date': '20.01.2017', 'time': '12:00', 'cost': '0' },
+	{ 'station': 'reu', 'date': '20.01.2017', 'time': '13:15', 'cost': '750' }, 
+	{ 'station': 'zhl', 'date': '20.01.2017', 'time': '14:05', 'cost': '500' }, 
+ 	{ 'station': 'vld', 'date': '20.01.2017', 'time' :'15:30', 'cost': '850' } ])
 
-stations1 = ['a', 'b', 'c']
-stations2 = ['a', 'c']
-stations3 = ['b', 'c']
-
-t1 = Train(number_first_train, stations1)
-t2 = Train(number_second_train,stations2 )
-t3 = Train(number_third_train, stations3)
+t3 = Train('3B', [
+	{ 'station': 'msk', 'date': '01.02.2017', 'time': '18:10', 'cost': '0' },
+	{ 'station': 'zhl', 'date': '01.02.2017', 'time': '19:30', 'cost': '800' }])
 
 all_trains.append(t1)
 all_trains.append(t2)
 all_trains.append(t3)
 
-start = 'a'
-end = 'c'
-money = 5
-p = Passenger(money, start, end, '15:10', '10.05.20')
-p.apply()
-
-def find_all_need_trains(all_trains, start_station, end_station):
-	print('all trains', all_trains)
-	for train in all_trains:
-		if start_station in train.stations and end_station in train.stations:
-			all_need_trains.append(train)
-	return all_need_trains
-
-all_need_trains = []
-all_need_trains = find_all_need_trains(all_trains, start, end)
-
-def get_intermediate_stations(trains, start, end): # промежуточные станции
-	intermediate_stations = []
-	for train in trains:
-		stations = []
-		start_index = train.stations.index(start)
-		end_index = train.stations.index(end)
-		counter = start_index + 1
-		while counter < end_index:
-			stations.append(train.stations[counter])
-			counter += 1
-		intermediate_stations.append(stations)
-	return intermediate_stations
-
-intermediate_stations = get_intermediate_stations(all_need_trains, start, end)
-print('num of trains - >', numbers_of_trains)
-print('need trains - >', all_need_trains)
-print('intermediate_stations - >', intermediate_stations)
-
-def get_options(all_need_trains, all_prices):
-	trains_with_prices = []
-	counter = 0
-	while counter < len(all_need_trains):
-		d = { all_need_trains[counter].number_of_train: [all_prices[counter], intermediate_stations[counter]] }
-		trains_with_prices.append(d)
-		counter += 1
-	return trains_with_prices
-
-
-c = Cashier(numbers_of_trains, intermediate_stations, end)
-
-all_prices = c.get_price()
-all_options = get_options(all_need_trains, all_prices)
-
-option = p.choose_a_train(all_options)
-print(option)
-passenger_score = c.give_the_score(option)
-print(p.pay(passenger_score))
-
-#Пассажир делает заявку на станцию назначения, время и дату поездки. Система регистрирует Заявку и осуществляет поиск соответствующего Поезда.
-#Пассажир делает выбор Поезда и получает Cчет на оплату. Кассир вводит номера Поездов, промежуточные и конечные станции, цены.
-
-
+cashierObj = Cashier(all_trains)
+passengerObj = Passenger( {'name': 'alex', 'start_st': 'msk', 'end_st': 'rst', 'time': '15:10', 'date': '15.12.2016'}, cashierObj, 1500)
+passengerObj.request_train()
+passengerObj.choose_and_buy_the_train()
 
 
 

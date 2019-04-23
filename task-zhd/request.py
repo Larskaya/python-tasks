@@ -1,8 +1,6 @@
 class Request:
-	def __init__(self, end_station, time, date):
-		self.station = end_station
-		self.time = time
-		self.date = date
+	def __init__(self, travel_settings):
+		self.travel_settings = travel_settings
 
 	def __repr__(self):
-		return 'Request' + ', end stations:' + str(self.station) + ', time:' + str(self.time) + ', date:' + str(self.date)
+		return 'Request' + str(self.travel_settings['start_st']) + str(self.travel_settings['end_st'])

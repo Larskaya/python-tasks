@@ -1,29 +1,27 @@
 from request import *
 
-all_requests = []
-
 class Passenger:
-	def __init__(self, money, start_station, end_station, time, date):
-		self.end_station = end_station
-		self.time = time
-		self.date = date
+	def __init__(self, travel_settings, cashier, money):
 		self.money = money
+		self.travel_settings = travel_settings
+		self.cashier = cashier
 
-	def apply(self):
-		all_requests.append(Request(self.end_station, self.time, self.date))
-		print('all requests', all_requests)
+	def request_train(self):
+		request = Request(self.travel_settings)
+		self.trains = self.cashier.processing(request)
 
-	def choose_a_train(self, all_options):
-		prices_of_option = []
-		print('all options', all_options)
-		for option in all_options:
-			keys = option.keys()
-			for name in keys:
-				prices_of_option.append(option[name])
-		best_option = min(prices_of_option)
-		return all_options[best_option]
+	def choose_and_buy_the_train(self):
+		if len(self.trains) > 0:
+			train = self.trains[0]
+			money = self.cashier.sell(train, self)
+			print('for sell', money)
+			if money < self.money:
+				self.money -= money
+				print('passenger balance after', self.money)
+			
 
-	def pay(self, score):
-		if self.money > score.price:
-			self.money -= score.price
-			return self.money
+
+
+		
+
+			
